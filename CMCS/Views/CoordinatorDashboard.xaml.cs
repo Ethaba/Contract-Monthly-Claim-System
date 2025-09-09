@@ -13,12 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace CMCS.Views
 {
-    /// <summary>
-    /// Interaction logic for CoordinatorDashboard.xaml
-    /// </summary>
-    public partial class CoordinatorDashboard : UserControl
+    public partial class CoordinatorDashboard : Window
     {
         public CoordinatorDashboard()
         {
@@ -26,3 +24,4 @@ namespace CMCS.Views
         }
     }
 }
+

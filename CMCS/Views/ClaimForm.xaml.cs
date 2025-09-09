@@ -13,12 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace CMCS.Views
 {
-    /// <summary>
-    /// Interaction logic for ClaimForm.xaml
-    /// </summary>
-    public partial class ClaimForm : UserControl
+    public partial class ClaimForm : Window
     {
         public ClaimForm()
         {
@@ -26,3 +24,4 @@ namespace CMCS.Views
         }
     }
 }
+

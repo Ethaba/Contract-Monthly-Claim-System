@@ -13,12 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace CMCS.Views
 {
-    /// <summary>
-    /// Interaction logic for ManagerDashboard.xaml
-    /// </summary>
-    public partial class ManagerDashboard : UserControl
+    public partial class ManagerDashboard : Window
     {
         public ManagerDashboard()
         {
@@ -26,3 +25,5 @@ namespace CMCS.Views
         }
     }
 }
+
+

@@ -13,12 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace CMCS.Views
 {
-    /// <summary>
-    /// Interaction logic for LecturerDashboard.xaml
-    /// </summary>
-    public partial class LecturerDashboard : UserControl
+    public partial class LecturerDashboard : Window
     {
         public LecturerDashboard()
         {
@@ -26,3 +24,5 @@ namespace CMCS.Views
         }
     }
 }
+
+

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using CMCS.Views; // Import the Views folder
 
 namespace CMCS.Views
 {
@@ -8,15 +7,30 @@ namespace CMCS.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            // Load Lecturer Dashboard by default
-            MainContent.Content = new LecturerDashboard();
+        private void LecturerDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            LecturerDashboard lecturerDashboard = new LecturerDashboard();
+            lecturerDashboard.Show();
+        }
 
-            // Event handlers for navigation buttons
-            btnLecturer.Click += (s, e) => MainContent.Content = new LecturerDashboard();
-            btnClaimForm.Click += (s, e) => MainContent.Content = new ClaimForm();
-            btnCoordinator.Click += (s, e) => MainContent.Content = new CoordinatorDashboard();
-            btnManager.Click += (s, e) => MainContent.Content = new ManagerDashboard();
+        private void CoordinatorDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            CoordinatorDashboard coordinatorDashboard = new CoordinatorDashboard();
+            coordinatorDashboard.Show();
+        }
+
+        private void ManagerDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            ManagerDashboard managerDashboard = new ManagerDashboard();
+            managerDashboard.Show();
+        }
+
+        private void ClaimForm_Click(object sender, RoutedEventArgs e)
+        {
+            ClaimForm claimForm = new ClaimForm();
+            claimForm.Show();
         }
     }
 }
