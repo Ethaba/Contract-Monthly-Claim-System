@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CMCS.Views; // Import the Views folder
 
-namespace CMCS
+namespace CMCS.Views
 {
     public partial class MainWindow : Window
     {
