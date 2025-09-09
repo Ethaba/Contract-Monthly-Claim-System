@@ -68,7 +68,7 @@
             <Button Content="Submit New Claim" 
                     Style="{StaticResource EdgeHoverButton}" 
                     Background="#38a169" BorderBrush="#38a169" 
-                    Click="ClaimForm_Click"/> 
+                    Click="ClaimForm_Click"/>
         </StackPanel>
     </Grid>
 </Window>
