@@ -43,8 +43,8 @@ This repository contains **Part 1 of the project**, focusing on the database des
 1. Clone the repository:
 
    ```bash
-   
-   cd 
+   https://github.com/Ethaba/Contract-Monthly-Claim-System.git
+   cd Contract-Monthly-Claim-System
    ```
 2. Open the solution in **Visual Studio**.
 3. Set **CMCS** as the startup project.
