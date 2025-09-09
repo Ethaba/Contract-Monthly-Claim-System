@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMCS", "CMCS\CMCS.csproj", "{522DDE88-3976-4CB3-8CE7-50790824E0F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{522DDE88-3976-4CB3-8CE7-50790824E0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{522DDE88-3976-4CB3-8CE7-50790824E0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{522DDE88-3976-4CB3-8CE7-50790824E0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{522DDE88-3976-4CB3-8CE7-50790824E0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E08B3E2-6B1C-4F24-9620-7BF086DDD5BB}
+	EndGlobalSection
+EndGlobal
