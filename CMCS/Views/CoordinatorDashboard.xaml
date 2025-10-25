@@ -17,8 +17,9 @@
                    FontSize="24" FontWeight="Bold"
                    Foreground="#2a4365" Margin="0,0,0,20"/>
 
-        <!-- Claims Table -->
-        <DataGrid Grid.Row="1" Margin="0,0,0,20"
+        <!-- Pending Claims Table -->
+        <DataGrid x:Name="DataGridPending"
+                  Grid.Row="1" Margin="0,0,0,20"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   AlternatingRowBackground="#edf2f7"
@@ -26,11 +27,12 @@
                   BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Claim ID" Width="100" Binding="{Binding ClaimId}"/>
-                <DataGridTextColumn Header="Lecturer" Width="200" Binding="{Binding Lecturer}"/>
-                <DataGridTextColumn Header="Month" Width="150" Binding="{Binding Month}"/>
-                <DataGridTextColumn Header="Total Hours" Width="150" Binding="{Binding TotalHours}"/>
-                <DataGridTextColumn Header="Amount" Width="150" Binding="{Binding Amount}"/>
-                <DataGridTextColumn Header="Status" Width="150" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Lecturer" Width="200" Binding="{Binding User.FirstName}"/>
+                <DataGridTextColumn Header="Month" Width="150" Binding="{Binding ClaimMonth}"/>
+                <DataGridTextColumn Header="Year" Width="100" Binding="{Binding ClaimYear}"/>
+                <DataGridTextColumn Header="Total Hours" Width="120" Binding="{Binding ClaimItems.Count}"/>
+                <DataGridTextColumn Header="Amount" Width="150" Binding="{Binding TotalAmount}"/>
+                <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -38,10 +40,10 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Verify Claim" Width="140" Height="40"
                     Background="#2b6cb0" Foreground="White"
-                    FontWeight="SemiBold" Margin="5"/>
+                    FontWeight="SemiBold" Margin="5" Click="VerifyClaim_Click"/>
             <Button Content="Request Revision" Width="140" Height="40"
                     Background="#e53e3e" Foreground="White"
-                    FontWeight="SemiBold" Margin="5"/>
+                    FontWeight="SemiBold" Margin="5" Click="RequestRevision_Click"/>
         </StackPanel>
     </Grid>
 </Window>

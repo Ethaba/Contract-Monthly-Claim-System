@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using CMCS.Data;
+using CMCS.Models;
+using CMCS.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace CMCS.Views
 {
@@ -7,30 +13,67 @@ namespace CMCS.Views
         public MainWindow()
         {
             InitializeComponent();
+            this.Loaded += MainWindow_Loaded;
         }
 
-        private void LecturerDashboard_Click(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LecturerDashboard lecturerDashboard = new LecturerDashboard();
-            lecturerDashboard.Show();
+            // load users into selector and navigate to Home page
+            try
+            {
+                using var scope = App.ServiceProvider!.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var users = db.Users.ToList();
+                UserSelector.ItemsSource = users;
+                var first = users.FirstOrDefault();
+                if (first != null)
+                {
+                    UserSelector.SelectedItem = first;
+                    Session.CurrentUser = first;
+                }
+
+                // Navigate to home page
+                MainFrame.Navigate(new HomePage());
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("Error loading users: " + ex.Message);
+            }
+
+            UserSelector.SelectionChanged += UserSelector_SelectionChanged;
         }
 
-        private void CoordinatorDashboard_Click(object sender, RoutedEventArgs e)
+        private void UserSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CoordinatorDashboard coordinatorDashboard = new CoordinatorDashboard();
-            coordinatorDashboard.Show();
+            if (UserSelector.SelectedItem is User u)
+            {
+                Session.CurrentUser = u;
+            }
         }
 
-        private void ManagerDashboard_Click(object sender, RoutedEventArgs e)
+        private void NavHome_Click(object sender, RoutedEventArgs e)
         {
-            ManagerDashboard managerDashboard = new ManagerDashboard();
-            managerDashboard.Show();
+            MainFrame.Navigate(new HomePage());
         }
 
-        private void ClaimForm_Click(object sender, RoutedEventArgs e)
+        private void NavLecturer_Click(object sender, RoutedEventArgs e)
         {
-            ClaimForm claimForm = new ClaimForm();
-            claimForm.Show();
+            MainFrame.Navigate(new LecturerPage());
+        }
+
+        private void NavCoordinator_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new CoordinatorPage());
+        }
+
+        private void NavManager_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ManagerPage());
+        }
+
+        private void NavClaimForm_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ClaimFormPage());
         }
     }
 }

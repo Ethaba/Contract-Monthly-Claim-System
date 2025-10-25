@@ -1,0 +1,40 @@
+﻿<Page x:Class="CMCS.Views.LecturerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Lecturer Dashboard" Background="#f9f9fb">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <TextBlock Text="Lecturer Dashboard" FontSize="24" FontWeight="Bold" Foreground="#2a4365"/>
+            <Button Content="Home" Margin="20,0,0,0" Click="Home_Click"/>
+        </StackPanel>
+
+        <DataGrid x:Name="DataGridClaims" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False"
+                  AlternatingRowBackground="#edf2f7" BorderBrush="#cbd5e0" BorderThickness="1" Margin="0,10,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Claim ID" Width="100" Binding="{Binding ClaimId}"/>
+                <DataGridTextColumn Header="Month" Width="100" Binding="{Binding ClaimMonth}"/>
+                <DataGridTextColumn Header="Year" Width="80" Binding="{Binding ClaimYear}"/>
+                <DataGridTextColumn Header="Total" Width="120" Binding="{Binding TotalAmount, StringFormat=N2}"/>
+                <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
+                <DataGridTemplateColumn Header="Actions" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="View" Click="ViewClaim_Click" Tag="{Binding ClaimId}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+            <Button Content="Submit New Claim" Width="160" Height="38" Margin="5" Click="SubmitNewClaim_Click" Background="#2b6cb0" Foreground="White"/>
+            <Button Content="Refresh" Width="100" Height="38" Margin="5" Click="Refresh_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -12,21 +12,34 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <TextBlock Text="Lecturer Dashboard" FontSize="24" FontWeight="Bold" Foreground="#2a4365" Margin="0,0,0,20"/>
 
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" AlternatingRowBackground="#edf2f7" BorderBrush="#cbd5e0" BorderThickness="1">
+        <!-- Claims DataGrid -->
+        <DataGrid x:Name="DataGridClaims"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  AlternatingRowBackground="#edf2f7"
+                  BorderBrush="#cbd5e0"
+                  BorderThickness="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Claim ID" Width="100" Binding="{Binding ClaimId}"/>
-                <DataGridTextColumn Header="Month" Width="150" Binding="{Binding Month}"/>
-                <DataGridTextColumn Header="Hours Worked" Width="150" Binding="{Binding HoursWorked}"/>
-                <DataGridTextColumn Header="Hourly Rate" Width="150" Binding="{Binding HourlyRate}"/>
+                <DataGridTextColumn Header="Month" Width="150" Binding="{Binding ClaimMonth}"/>
+                <DataGridTextColumn Header="Year" Width="100" Binding="{Binding ClaimYear}"/>
+                <DataGridTextColumn Header="Total Amount" Width="150" Binding="{Binding TotalAmount}"/>
                 <DataGridTextColumn Header="Status" Width="150" Binding="{Binding Status}"/>
             </DataGrid.Columns>
         </DataGrid>
 
+        <!-- Footer Buttons -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Submit New Claim" Width="180" Height="40" Background="#2b6cb0" Foreground="White" FontWeight="SemiBold" Margin="5"/>
-            <Button Content="Upload Document" Width="180" Height="40" Background="#38a169" Foreground="White" FontWeight="SemiBold" Margin="5"/>
+            <Button Content="Submit New Claim" Width="180" Height="40"
+                    Background="#2b6cb0" Foreground="White" FontWeight="SemiBold"
+                    Margin="5" Click="SubmitNewClaim_Click"/>
+            <Button Content="Upload Document" Width="180" Height="40"
+                    Background="#38a169" Foreground="White" FontWeight="SemiBold"
+                    Margin="5" Click="UploadDocument_Click"/>
         </StackPanel>
     </Grid>
 </Window>

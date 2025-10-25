@@ -1,32 +1,25 @@
-﻿
-
-
-using CMCS.Models;
+﻿using CMCS.Models;
 using CMCS.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CMCS.Views
 {
-    public partial class ManagerDashboard : Window
+    public partial class ManagerPage : Page
     {
         private readonly IClaimService _claimService;
 
-        public ManagerDashboard()
+        public ManagerPage()
         {
             InitializeComponent();
-            var scope = App.ServiceProvider?.CreateScope();
-            if (scope == null) throw new InvalidOperationException("Service provider not configured.");
+            var scope = App.ServiceProvider!.CreateScope();
             _claimService = scope.ServiceProvider.GetRequiredService<IClaimService>();
-            this.Loaded += ManagerDashboard_Loaded;
+            Loaded += ManagerPage_Loaded;
         }
 
-        private void ManagerDashboard_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadPending();
-        }
+        private void ManagerPage_Loaded(object sender, RoutedEventArgs e) => LoadPending();
 
         private void LoadPending()
         {
@@ -38,10 +31,8 @@ namespace CMCS.Views
         {
             if (DataGridPending.SelectedItem is Claim c)
             {
-                var user = Session.CurrentUser;
-                if (user == null) { MessageBox.Show("Select user in Main window"); return; }
-
-                _claimService.ApproveClaim(c.ClaimId, user.UserId, "Manager", "Approved", "Approved by manager");
+                if (Session.CurrentUser == null) { MessageBox.Show("Select a user."); return; }
+                _claimService.ApproveClaim(c.ClaimId, Session.CurrentUser.UserId, "Manager", "Approved", "Approved by manager");
                 MessageBox.Show("Claim approved.");
                 LoadPending();
             }
@@ -52,15 +43,16 @@ namespace CMCS.Views
         {
             if (DataGridPending.SelectedItem is Claim c)
             {
-                var user = Session.CurrentUser;
-                if (user == null) { MessageBox.Show("Select user in Main window"); return; }
-
-            
-                _claimService.ApproveClaim(c.ClaimId, user.UserId, "Manager", "Rejected", "Rejected by manager");
+                if (Session.CurrentUser == null) { MessageBox.Show("Select a user."); return; }
+                _claimService.ApproveClaim(c.ClaimId, Session.CurrentUser.UserId, "Manager", "Rejected", "Rejected by manager");
                 MessageBox.Show("Claim rejected.");
                 LoadPending();
             }
             else MessageBox.Show("Select a claim first.");
         }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e) => LoadPending();
+
+        private void Home_Click(object sender, RoutedEventArgs e) => NavigationService?.Navigate(new HomePage());
     }
 }
