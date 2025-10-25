@@ -1,8 +1,8 @@
 ﻿<Page x:Class="CMCS.Views.ClaimFormPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Submit Claim" Background="#f9f9fb">
-    <Grid Margin="12">
+      Title="Submit Claim" Background="#f9f9fb"> 
+    <Grid Margin="12"> 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
