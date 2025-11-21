@@ -1,0 +1,171 @@
+﻿@model IEnumerable<CMCS.Web.Models.User>
+
+@{
+    ViewData["Title"] = "CMCS - Home";
+    var users = Model ?? Enumerable.Empty<CMCS.Web.Models.User>();
+}
+
+@{
+    Layout = "_Layout";
+    ViewData["BodyClass"] = "home-bg";
+
+}
+
+<div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="home-title"> <small style="font-weight:500; color:white; font-size:1.7rem;">Contract Monthly Claim System</small></h1>
+            <div class="home-subtitle"> <small style="color: white;">Submit and track monthly claims - pick a user account and an action to continue</small></div>
+        </div>
+
+        <div>
+            <span id="selectedUserBadge" class="user-badge" style="display:none"></span>
+        </div>
+    </div>
+</div>
+
+    <section class="user-select-section">
+        <div class="card small-card">
+            <div class="card-body">
+                <label for="userId" class="form-label">Sign in as</label>
+                <select id="userId" class="form-select">
+                    <option value="">-- Select user --</option>
+
+                @if (Model != null)
+                {
+                    foreach (var u in Model)
+                    {
+                        var fullName = ((u.FirstName ?? "") + " " + (u.LastName ?? "")).Trim();
+                        // display role only in the dropdown, keep fullname & role as data attributes
+                        <option value="@u.UserId" data-role="@u.Role" data-fullname="@fullName">@u.Role</option>
+                    }
+                }
+            </select>
+                <small class="muted d-block mt-2">Only allowed actions become active for the selected role.</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="cards-grid">
+        <!-- Each form submits userId + actionType to HomeController.Navigate -->
+        <div class="card-col">
+            <form asp-action="Navigate" method="post" class="card-form" onsubmit="return syncFormUserId(this);">
+                <input type="hidden" name="userId" class="hidden-userid" />
+                <input type="hidden" name="actionType" value="MyClaims" />
+                <button type="submit" class="action-card" aria-label="My Claims">
+                    <div class="card-inner">
+                        <div class="card-icon">👤</div>
+                        <div>
+                            <h3 class="card-title">My Claims</h3>
+                            <p class="card-desc">View claims submitted by the selected lecturer.</p>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <div class="card-col">
+            <form asp-action="Navigate" method="post" class="card-form" onsubmit="return syncFormUserId(this);">
+                <input type="hidden" name="userId" class="hidden-userid" />
+                <input type="hidden" name="actionType" value="CreateClaim" />
+                <button type="submit" class="action-card" aria-label="Submit Claim">
+                    <div class="card-inner">
+                        <div class="card-icon">📎</div>
+                        <div>
+                            <h3 class="card-title">Submit Claim</h3>
+                            <p class="card-desc">Create a new monthly claim and upload supporting documents.</p>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <div class="card-col">
+            <form asp-action="Navigate" method="post" class="card-form" onsubmit="return syncFormUserId(this);">
+                <input type="hidden" name="userId" class="hidden-userid" />
+                <input type="hidden" name="actionType" value="Coordinator" />
+                <button type="submit" class="action-card" aria-label="Coordinator Dashboard">
+                    <div class="card-inner">
+                        <div class="card-icon">🛡️</div>
+                        <div>
+                            <h3 class="card-title">Coordinator Dashboard</h3>
+                            <p class="card-desc">Verify or request revisions for submitted claims.</p>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <div class="card-col">
+            <form asp-action="Navigate" method="post" class="card-form" onsubmit="return syncFormUserId(this);">
+                <input type="hidden" name="userId" class="hidden-userid" />
+                <input type="hidden" name="actionType" value="Manager" />
+                <button type="submit" class="action-card" aria-label="Manager Dashboard">
+                    <div class="card-inner">
+                        <div class="card-icon">✅</div>
+                        <div>
+                            <h3 class="card-title">Manager Dashboard</h3>
+                            <p class="card-desc">Final approval or rejection of reviewed claims.</p>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="home-footer muted">
+    <small style ="color: white;">Tip: select a user to enable the relevant actions. Server-side role checks still apply.</small>
+    </footer>
+
+
+@section Scripts {
+    <script>
+        (function() {
+            const selector = document.getElementById('userId');
+            const badge = document.getElementById('selectedUserBadge');
+            const forms = document.querySelectorAll('.card-form');
+
+            // Fill hidden input before submit and prevent submit if no user selected
+            window.syncFormUserId = function(form) {
+                const hidden = form.querySelector('.hidden-userid');
+                const uid = selector.value;
+                if (!uid) {
+                    alert('Please select a user first.');
+                    return false;
+                }
+                hidden.value = uid;
+                return true;
+            };
+
+            function updateUI() {
+                const opt = selector.options[selector.selectedIndex];
+                if (!opt || !opt.value) {
+                    badge.style.display = 'none';
+                    forms.forEach(f => f.querySelector('.action-card').setAttribute('disabled','true'));
+                    return;
+                }
+                const fullname = opt.dataset.fullname || '';
+                const role = opt.dataset.role || '';
+
+                badge.textContent = fullname + (role ? ' — ' + role : '');
+                badge.style.display = 'inline-block';
+
+                // enable only allowed actions (client-side UX)
+                forms.forEach(f => {
+                    const actionType = (f.querySelector('input[name="actionType"]').value || '');
+                    const btn = f.querySelector('.action-card');
+                    let allow = false;
+                    if (role === 'Lecturer' && (actionType === 'MyClaims' || actionType === 'CreateClaim')) allow = true;
+                    if (role === 'Coordinator' && actionType === 'Coordinator') allow = true;
+                    if (role === 'Manager' && actionType === 'Manager') allow = true;
+
+                    if (allow) btn.removeAttribute('disabled');
+                    else btn.setAttribute('disabled', 'true');
+                });
+            }
+
+            selector.addEventListener('change', updateUI);
+            updateUI();
+        })();
+    </script>
+}

@@ -16,7 +16,7 @@ namespace CMCS.Views
 {
     public partial class ClaimFormPage : Page
     {
-        // Use definite assignment; we'll initialize these in the constructor so keep them non-nullable.
+        
         private readonly IClaimService _claimService;
         private readonly IFileService _fileService;
         private readonly ObservableCollection<ClaimItem> _items = new ObservableCollection<ClaimItem>();

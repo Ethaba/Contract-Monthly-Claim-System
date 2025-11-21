@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+@{
+    ViewData["Title"] = "Coordinator Dashboard";
+    var userId = ViewBag.UserId ?? 0;
+}
+
+<h2>Programme Coordinator Dashboard</h2>
+<p>Pending claims for verification:</p>
+
+<table class="table table-striped">
+    <thead><tr><th>Claim ID</th><th>Lecturer (UserId)</th><th>Month</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.ClaimId</td>
+                <td>@c.UserId</td>
+                <td>@c.ClaimMonth/@c.ClaimYear</td>
+                <td>@c.TotalAmount.ToString("N2")</td>
+                <td>@c.Status</td>
+                <td>
+                    <a asp-controller="Claim" asp-action="Details" asp-route-id="@c.ClaimId" asp-route-userId="@ViewBag.UserId" class="btn btn-sm btn-info">View</a>
+
+
+                    @* Only allow coordinator actions when status == Submitted *@
+                    @if (string.Equals(c.Status, "Submitted", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <form asp-controller="Claim" asp-action="Approve" method="post" style="display:inline-block; margin-left:5px">
+                            <input type="hidden" name="id" value="@c.ClaimId" />
+                            <input type="hidden" name="approverId" value="@userId" />
+                            <input type="hidden" name="role" value="Coordinator" />
+                            <input type="hidden" name="decision" value="Approved" />
+                            <input type="hidden" name="comments" value="Verified by coordinator" />
+                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+
+                        <form asp-controller="Claim" asp-action="Approve" method="post" style="display:inline-block; margin-left:5px">
+                            <input type="hidden" name="id" value="@c.ClaimId" />
+                            <input type="hidden" name="approverId" value="@userId" />
+                            <input type="hidden" name="role" value="Coordinator" />
+                            <input type="hidden" name="decision" value="Rejected" />
+                            <input type="hidden" name="comments" value="Rejected by coordinator" />
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

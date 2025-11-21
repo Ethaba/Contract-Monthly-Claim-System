@@ -1,0 +1,58 @@
+﻿@model CMCS.Web.Models.Claim
+@{
+    ViewData["Title"] = "Create Claim";
+    var userId = ViewBag.UserId ?? 1;
+}
+<h2>Create Claim</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="userId" value="@userId" />
+    <div class="mb-3">
+        <label>Month (1-12)</label>
+        <input name="ClaimMonth" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Year</label>
+        <input name="ClaimYear" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Notes</label>
+        <textarea name="Notes" class="form-control"></textarea>
+    </div>
+
+    <h4>Claim Items</h4>
+    <div id="items">
+        <div class="item row mb-2">
+            <div class="col"><input name="itemDescriptions" class="form-control" placeholder="Description" /></div>
+            <div class="col"><input name="itemHours" type="number" step="0.25" class="form-control" placeholder="Hours" /></div>
+            <div class="col"><input name="itemRates" type="number" step="0.01" class="form-control" placeholder="Rate" /></div>
+            <div class="col"><button type="button" class="btn btn-danger remove-item">-</button></div>
+        </div>
+    </div>
+    <button type="button" id="addItem" class="btn btn-secondary mb-3">Add Item</button>
+
+    <div class="mb-3">
+        <label>Attach files (.pdf,.docx,.xlsx)</label>
+        <input type="file" name="files" multiple class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Claim</button>
+    <a asp-action="Index" asp-route-userId="@userId" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('addItem').addEventListener('click', function(){
+            var container = document.getElementById('items');
+            var node = container.children[0].cloneNode(true);
+            node.querySelectorAll('input').forEach(i => i.value = '');
+            container.appendChild(node);
+        });
+        document.addEventListener('click', function(e){
+            if (e.target && e.target.classList.contains('remove-item')) {
+                var row = e.target.closest('.item');
+                if (row) row.remove();
+            }
+        });
+    </script>
+}

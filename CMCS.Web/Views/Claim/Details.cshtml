@@ -1,0 +1,86 @@
+﻿@model CMCS.Web.Models.Claim
+
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<h2>Claim Details</h2>
+
+<div class="small-card mb-3">
+    <div class="card-body">
+        <p><strong>Status:</strong> @(Model.Status ?? "N/A")</p>
+        <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+        <p><strong>Date Submitted:</strong> @Model.DateSubmitted.ToString("g")</p>
+    </div>
+</div>
+
+<h4>Claim Items</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ClaimItems)
+        {
+            <tr>
+                <td>@(item.Description ?? "N/A")</td>
+                <td>@item.HoursWorked</td>
+                <td>@item.HourlyRate.ToString("C")</td>
+                <td>@item.Amount.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Approvals</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Approver</th>
+            <th>Role</th>
+            <th>Decision</th>
+            <th>Comments</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var approval in Model.Approvals)
+        {
+            <tr>
+                <td>@(approval.Approver?.FullName ?? "N/A")</td>
+                <td>@(approval.Role ?? "N/A")</td>
+                <td>@(approval.Decision ?? "Pending")</td>
+                <td>@(approval.Comments ?? "None")</td>
+                <td>@approval.DecisionAt.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (ViewBag.UserRole != null && (ViewBag.UserRole.ToString() == "Coordinator" && Model.Status == "Submitted" ||
+                                ViewBag.UserRole.ToString() == "Manager" && Model.Status == "Reviewed"))
+{
+    <h4>Take Action</h4>
+    <form asp-action="Approve" method="post">
+        <input type="hidden" name="id" value="@Model.ClaimId" />
+        <input type="hidden" name="approverId" value="@ViewBag.UserId" />
+        <input type="hidden" name="role" value="@ViewBag.UserRole" />
+        <div class="mb-2">
+            <label>Decision</label>
+            <select name="decision" class="form-select">
+                <option value="Approved">Approve</option>
+                <option value="Rejected">Reject</option>
+            </select>
+        </div>
+        <div class="mb-2">
+            <label>Comments</label>
+            <textarea name="comments" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+
+@{
+    ViewData["Title"] = "My Claims";
+}
+
+<h2>My Claims</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Claim ID</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Date Submitted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            // Add 'table-danger' for rejected claims
+            var rowClass = claim.Status?.Equals("Rejected", StringComparison.OrdinalIgnoreCase) == true ? "table-danger" : "";
+            <tr class="@rowClass">
+                <td>@claim.ClaimId</td>
+                <td>@claim.ClaimMonth</td>
+                <td>@claim.ClaimYear</td>
+                <td>@claim.TotalAmount.ToString("C")</td>
+                <td>
+                    @claim.Status
+                    @if (!string.IsNullOrWhiteSpace(claim.Notes) && claim.Status?.Equals("Rejected", StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        <span class="badge bg-danger" title="@claim.Notes">!</span>
+                    }
+                </td>
+                <td>@claim.DateSubmitted.ToString("g")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@claim.ClaimId" class="btn btn-sm btn-primary">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
