@@ -20,7 +20,7 @@
                 <td>@c.Status</td>
                 <td>
                     <a asp-controller="Claim" asp-action="Details" asp-route-id="@c.ClaimId" asp-route-userId="@ViewBag.UserId" class="btn btn-sm btn-info">View</a>
-
+                    
 
                     @* Only allow manager actions when status == Reviewed *@
                     @if (string.Equals(c.Status, "Reviewed", StringComparison.OrdinalIgnoreCase))
